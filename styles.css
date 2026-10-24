@@ -1,0 +1,1555 @@
+/* ==========================================================================
+   APEX VORTEX GT // HIGH-END 3D AUTOMOTIVE HERO STYLESHEET
+   Aston Martin-Inspired Luxury Hero Page (1920 × 1080 PX)
+   ========================================================================== */
+
+:root {
+  --bg-dark: #07090c;
+  --text-primary: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.65);
+  --text-dim: rgba(255, 255, 255, 0.45);
+  
+  --accent-teal: #14d2b8;
+  --accent-teal-glow: rgba(20, 210, 184, 0.35);
+  
+  --font-serif: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+  
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+body {
+  width: 100%;
+  min-height: 1250vh;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom dark scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #080a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 3px;
+}
+
+/* Obsolete legacy HUD root */
+#hud-root {
+  display: none !important;
+}
+
+/* ==========================================================================
+   WEBGL CANVAS CONTAINER — DARK CHARCOAL STUDIO BACKDROP & SPOTLIGHT
+   ========================================================================== */
+#webgl-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  outline: none;
+  pointer-events: none;
+  background:
+    /* Top curved ambient cool blue sheen */
+    radial-gradient(ellipse 1300px 170px at 50% 0%, rgba(160, 210, 255, 0.15) 0%, rgba(130, 185, 255, 0.035) 45%, transparent 80%),
+    /* Subtle curved cyclorama horizon highlight behind car */
+    radial-gradient(ellipse 1500px 180px at 50% 61%, rgba(130, 190, 255, 0.06) 0%, rgba(90, 150, 230, 0.015) 50%, transparent 85%),
+    /* Blue tilt studio spotlight behind the car body */
+    radial-gradient(ellipse 980px 400px at 50% 59%, rgba(120, 180, 255, 0.16) 0%, rgba(70, 140, 220, 0.04) 50%, transparent 95%),
+    /* Studio turntable circular groove / ring on the floor */
+    radial-gradient(ellipse 1180px 150px at 50% 75%, transparent 88%, rgba(130, 185, 255, 0.04) 91%, rgba(160, 210, 255, 0.08) 94%, transparent 97%),
+    /* Floor contact glow & reflection sheen under wheels */
+    radial-gradient(ellipse 850px 130px at 50% 75%, rgba(130, 190, 255, 0.12) 0%, rgba(80, 140, 220, 0.04) 55%, transparent 85%),
+    /* Base dark midnight-blue charcoal-to-black gradient */
+    linear-gradient(180deg, #05070c 0%, #070a12 25%, #0d131f 52%, #080b13 78%, #040509 100%);
+}
+
+#webgl-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  background: transparent !important;
+  transform: translateY(calc(120px * (1 - var(--scroll-progress, 0))));
+  will-change: transform;
+}
+
+/* ==========================================================================
+   LOADER OVERLAY
+   ========================================================================== */
+.loader-overlay {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.loader-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(420px, 85vw);
+  text-align: center;
+}
+
+.loader-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.loader-logo {
+  width: 38px;
+  height: 38px;
+  color: var(--accent-teal);
+  filter: drop-shadow(0 0 12px var(--accent-teal-glow));
+  animation: logoPulse 2s infinite ease-in-out;
+}
+
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.06); opacity: 1; filter: drop-shadow(0 0 20px var(--accent-teal)); }
+}
+
+.loader-title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.35em;
+  color: #fff;
+}
+
+.loader-bar-wrap {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.loader-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #14d2b8, #fff);
+  box-shadow: 0 0 16px var(--accent-teal);
+  transition: width 0.2s ease-out;
+}
+
+.loader-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+}
+
+/* ==========================================================================
+   PREMIUM ASTON MARTIN-INSPIRED HERO UI (1920 × 1080 PX)
+   Exact pixel coordinates, refined typography, and restrained luxury accents
+   ========================================================================== */
+
+/* Main 1920x1080 Container */
+.hero-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* Enable pointer events on all interactive elements */
+.hero-container a,
+.hero-container button,
+.hero-container .swatch-item,
+.hero-container .config-tab,
+.hero-container .hero-explore {
+  pointer-events: auto;
+}
+
+/* Smooth fade of hero text & controls during scroll to reveal clean side view */
+.hero-card-left,
+.hero-top-nav,
+.hero-eyebrow,
+.hero-headline,
+.hero-subtitle,
+.hero-explore,
+.side-arrow,
+.configurator-tabs,
+.color-swatches {
+  opacity: var(--hero-scroll-opacity, 1);
+  transition: opacity 0.12s ease-out;
+}
+
+.hero-container.scrolled-hidden .hero-card-left,
+.hero-container.scrolled-hidden .hero-top-nav,
+.hero-container.scrolled-hidden .hero-eyebrow,
+.hero-container.scrolled-hidden .hero-headline,
+.hero-container.scrolled-hidden .hero-subtitle,
+.hero-container.scrolled-hidden .hero-explore,
+.hero-container.scrolled-hidden .side-arrow,
+.hero-container.scrolled-hidden .configurator-tabs,
+.hero-container.scrolled-hidden .color-swatches {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   TOP NAVIGATION (Y: 25–75 PX)
+   Logo at X: 80 px, Nav links at X: 250 px, Utility links at top-right
+   -------------------------------------------------------------------------- */
+.hero-top-nav {
+  position: absolute;
+  top: 25px;
+  left: 0;
+  width: 1920px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  z-index: 25;
+}
+
+/* Curved ambient pure white sheen across the top header */
+.nav-sheen {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1600px;
+  height: 120px;
+  pointer-events: none;
+  background: radial-gradient(ellipse 800px 55px at 50% 0%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 55%, transparent 80%);
+}
+
+/* Logo at X: 80 px */
+.nav-logo {
+  position: absolute;
+  left: 80px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  opacity: 0.95;
+  transition: opacity 0.25s ease;
+}
+
+.nav-logo:hover {
+  opacity: 1;
+}
+
+.logo-emblem {
+  display: block;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* Nav links starting at X: 250 px */
+.nav-links {
+  position: absolute;
+  left: 250px;
+  display: flex;
+  align-items: center;
+  gap: 38px;
+}
+
+.nav-link {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: opacity 0.25s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffffff;
+  opacity: 1;
+}
+
+/* Utility Links aligned top-right */
+.nav-right {
+  position: absolute;
+  right: 80px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-sep {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 11px;
+  user-select: none;
+}
+
+.nav-pin {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin-left: -4px;
+  transition: opacity 0.25s ease;
+}
+
+.nav-pin:hover {
+  color: #ffffff;
+  opacity: 0.8;
+}
+
+/* --------------------------------------------------------------------------
+   EYEBROW TEXT (Y: 145 PX)
+   Centered, small uppercase, letter-spaced: “INTRODUCING THE MACHINE”
+   -------------------------------------------------------------------------- */
+.hero-eyebrow {
+  position: absolute;
+  top: 145px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.40em;
+  color: #ffffff;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   MAIN HEADLINE (Y: 190–260 PX)
+   Centered, large elegant uppercase typography: “BUILT TO THRILL”
+   -------------------------------------------------------------------------- */
+.hero-headline {
+  position: absolute;
+  top: 190px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 54px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: #ffffff;
+  white-space: nowrap;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+}
+
+.headline-teal {
+  color: #ffffff;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+}
+
+.hero-subtitle,
+.hero-explore {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   SIDE NAVIGATION ARROWS (X: 75 px & X: 1845 px, Y: 540 px)
+   -------------------------------------------------------------------------- */
+.side-arrow {
+  position: absolute;
+  top: 540px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #ffffff;
+  opacity: 0.60;
+  cursor: pointer;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 20;
+}
+
+.side-arrow:hover {
+  color: #ffffff;
+  opacity: 1;
+}
+
+.arrow-left {
+  left: 75px;
+}
+
+.arrow-left:hover {
+  transform: translateY(-50%) translateX(-3px);
+}
+
+.arrow-right {
+  left: 1845px;
+}
+
+.arrow-right:hover {
+  transform: translateY(-50%) translateX(3px);
+}
+
+/* --------------------------------------------------------------------------
+   CONFIGURATOR TABS (Y: 820 PX)
+   -------------------------------------------------------------------------- */
+.configurator-tabs {
+  position: absolute;
+  top: 820px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 42px;
+  z-index: 20;
+}
+
+.config-tab {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  color: #ffffff;
+  opacity: 0.60;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  padding: 0 4px 8px 4px;
+  transition: opacity 0.25s ease;
+}
+
+.config-tab:hover {
+  opacity: 0.85;
+}
+
+.config-tab.active {
+  color: #ffffff;
+  opacity: 1;
+}
+
+.tab-line {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 1.5px;
+  background: #ffffff;
+  transition: width 0.25s ease;
+}
+
+.config-tab.active .tab-line {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   COLOR SWATCHES (Y: 875 PX)
+   -------------------------------------------------------------------------- */
+.color-swatches {
+  position: absolute;
+  top: 875px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  z-index: 20;
+}
+
+.swatch-item {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0;
+  outline: none;
+}
+
+.swatch-item::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.swatch-item.active::before {
+  border-color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.swatch-item .swatch-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--swatch-color);
+  background-image: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.08) 45%, rgba(0, 0, 0, 0.45) 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+  transition: transform 0.2s ease;
+}
+
+.swatch-item:hover .swatch-circle {
+  transform: scale(1.10);
+}
+
+/* Distinct subtle borders for dark & light finishes */
+.swatch-item[data-paint="black"] .swatch-circle {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.swatch-item[data-paint="white"] .swatch-circle,
+.swatch-item[data-paint="silver"] .swatch-circle {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Tiny active indicator line beneath selected swatch */
+.swatch-active-line {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 1px;
+  opacity: 0;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  transition: opacity 0.25s ease;
+}
+
+.swatch-item.active .swatch-active-line {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   STAGE 1 SIDE POSE SHOWCASE UI ("KINETIC DRIVE")
+   ========================================================================== */
+.side-pose-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+  z-index: 8;
+  opacity: var(--side-ui-opacity, 0);
+  transform: translateY(var(--side-ui-translate-y, 20px));
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out, visibility 0.15s ease-out;
+  visibility: hidden;
+}
+
+.side-pose-container.active {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.side-pose-content {
+  position: absolute;
+  left: 1190px;
+  top: 235px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.side-eyebrow-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 34px;
+}
+
+.side-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  color: rgba(255, 255, 255, 0.78);
+  text-transform: uppercase;
+}
+
+.side-eyebrow-line {
+  width: 85px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.side-number {
+  font-family: 'Space Grotesk', var(--font-sans);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+  margin-bottom: 12px;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.7);
+}
+
+.side-headline {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Orbitron', 'Space Grotesk', var(--font-sans);
+  font-size: 78px;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0 0 28px 0;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.95);
+}
+
+.side-desc {
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 400;
+  line-height: 1.85;
+  letter-spacing: 0.07em;
+  color: rgba(235, 240, 248, 0.78);
+  margin: 0 0 42px 0;
+  max-width: 440px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}
+
+.side-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.side-explore-bar {
+  width: 38px;
+  height: 2.5px;
+  background: #ffffff;
+  border-radius: 1px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+}
+
+.side-explore-label {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.side-explore-line {
+  width: 24px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* Right Side Step Pagination */
+.side-pagination {
+  position: absolute;
+  right: 85px;
+  top: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 22px;
+}
+
+.pagination-step {
+  font-family: 'Space Grotesk', var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.pagination-step-wrap.active {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination-step-wrap.active .pagination-step {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.pagination-active-dash {
+  width: 16px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+/* ==========================================================================
+   STAGE 3 REAR POSE SHOWCASE UI ("REAR DYNAMICS" - AFTER LINEUP)
+   ========================================================================== */
+.rear-pose-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10;
+  opacity: var(--rear-ui-opacity, 0);
+  transform: translateY(var(--rear-ui-translate-y, 20px));
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s ease-out;
+  visibility: hidden;
+}
+
+.rear-pose-container.active {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.rear-pose-content {
+  position: absolute;
+  left: 140px;
+  top: 240px;
+  width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* ==========================================================================
+   STAGE 4 TOP POSE SHOWCASE UI ("AERO ARCHITECTURE" - TOP ANGLE)
+   ========================================================================== */
+.top-pose-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10;
+  opacity: var(--top-ui-opacity, 0);
+  transform: translateY(var(--top-ui-translate-y, 20px));
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s ease-out;
+  visibility: hidden;
+}
+
+.top-pose-container.active {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.top-pose-content {
+  position: absolute;
+  right: 170px;
+  top: 235px;
+  width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.top-pose-content .side-headline {
+  font-size: 60px;
+  letter-spacing: 0.04em;
+  margin: 0 0 24px 0;
+  line-height: 1.05;
+}
+
+/* ==========================================================================
+   HONDA M POWER LINEUP SHOWCASE (ATTACHED TO ENTIRE SCREEN)
+   ========================================================================== */
+.lineup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 12;
+  opacity: var(--lineup-opacity, 0);
+  transition: opacity 0.2s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.lineup-container.active {
+  pointer-events: auto;
+}
+
+.lineup-content {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: scale(calc(1.03 - 0.03 * var(--lineup-scale, 0)));
+  transition: transform 0.2s ease-out;
+}
+
+.lineup-header {
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.lineup-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.45em;
+  color: #ffffff;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+}
+
+.lineup-headline {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.95);
+}
+
+.lineup-image-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.lineup-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  border-radius: 0;
+  filter: none;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+.lineup-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 9, 13, 0.75) 0%,
+    rgba(7, 9, 13, 0.15) 20%,
+    rgba(7, 9, 13, 0.0) 45%,
+    rgba(7, 9, 13, 0.0) 65%,
+    rgba(7, 9, 13, 0.35) 82%,
+    rgba(7, 9, 13, 0.85) 100%
+  );
+}
+
+.lineup-models {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 240px;
+  align-items: center;
+  z-index: 10;
+}
+
+.model-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.model-badge {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.model-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 5px;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE SCALING FOR OTHER SCREEN SIZES (PRESERVES 1920x1080 PROPORTIONS)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1919px), (max-height: 1079px) {
+  .hero-container {
+    transform-origin: top center;
+    transform: translateX(-50%) scale(min(calc(100vw / 1920), calc(100vh / 1080)));
+  }
+}
+
+/* ==========================================================================
+   STAGE 6: SLOWRIDE AUTOMOTIVE SHOWCASE (REACT + TAILWIND CSS)
+   CAME FROM THE BOTTOM SCROLL REVEAL (NO FADE-IN / FADE-OUT)
+   ========================================================================== */
+.slowride-section-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 20;
+  pointer-events: none;
+  background-color: #090b0e;
+  box-shadow: 0 -25px 60px rgba(0, 0, 0, 0.95), 0 -1px 0 rgba(255, 255, 255, 0.08);
+  transform: translateY(var(--slowride-translate-y, 100%));
+  will-change: transform;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slowride-section-container.active {
+  pointer-events: auto;
+}
+
+#slowride-root {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slowride-header-wrap {
+  transform: translateY(var(--slowride-header-offset, 0px));
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+.slowride-heading {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: 0.38em;
+}
+
+.slowride-subtitle {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: 0.55em;
+}
+
+.slowride-desc {
+  font-family: var(--font-sans);
+}
+
+/* ==========================================================================
+   SLOWRIDE ASYMMETRICAL 3-IMAGE COLLAGE (MATCHES USER GREEN BOXES)
+   ========================================================================== */
+.slowride-collage-wrap {
+  position: relative;
+  transform: translateY(var(--slowride-panel-offset, 0px));
+  will-change: transform;
+  transition: transform 0.15s ease-out;
+}
+
+.slowride-panel-box {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 3px;
+  background-color: #0c0e13;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 1px 1px rgba(255, 255, 255, 0.04);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.slowride-panel-box:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.95), 0 0 20px rgba(255, 255, 255, 0.08);
+  transform: scale(1.015);
+}
+
+/* Green Box 1: Upper-Center / Top (HONDA Laserlight) */
+.slowride-box-front {
+  top: 0;
+  left: 20%;
+  width: 48%;
+  height: 46%;
+  z-index: 10;
+}
+
+/* Green Box 2: Lower-Left / Center (HONDA M Forged Wheel & Brakes) */
+.slowride-box-wheel {
+  bottom: 0;
+  left: 0;
+  width: 52%;
+  height: 64%;
+  z-index: 20;
+}
+
+/* Green Box 3: Right Side (HONDA M Rear Taillight & Exhaust) */
+.slowride-box-rear {
+  top: 14%;
+  right: 0;
+  width: 44%;
+  height: 76%;
+  z-index: 15;
+}
+
+/* Responsive adjustment for mobile / narrow tablets */
+@media (max-width: 1023px) {
+  .slowride-editorial-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .slowride-collage-wrap {
+    width: 100%;
+    height: 480px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+}
+
+/* ==========================================================================
+   STAGE 7: HONDA DIAGONAL MOTION GALLERY (16 IMAGES STREAM - CONTINUOUS CONVOY)
+   FLIGHT FROM BOTTOM-RIGHT CORNER TO TOP-LEFT CORNER OUT OF RANGE
+   ========================================================================== */
+.stream-section-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+  background-color: #040608;
+  box-shadow: 0 -35px 80px rgba(0, 0, 0, 0.98), 0 -1px 0 rgba(28, 105, 210, 0.35);
+  transform: translateY(var(--stream-translate-y, 100%));
+  will-change: transform;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stream-section-container.active {
+  pointer-events: auto;
+}
+
+#stream-root {
+  width: 100%;
+  height: 100%;
+}
+
+.stream-inner {
+  width: 100%;
+  height: 100%;
+}
+
+.stream-card {
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+/* Subtle glowing diagonal flight track connecting bottom-right to top-left */
+.stream-diagonal-track {
+  position: absolute;
+  width: 250vmax;
+  height: 1.5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  background: linear-gradient(90deg, transparent 0%, rgba(28, 105, 210, 0.15) 25%, rgba(38, 160, 252, 0.45) 50%, rgba(28, 105, 210, 0.15) 75%, transparent 100%);
+  box-shadow: 0 0 20px rgba(28, 105, 210, 0.4);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   STAGE 8: DOMINATOR FINALE — 3D CAR FRONT POSE (Matching Reference Image)
+   ========================================================================== */
+.dominator-section-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 35;
+  pointer-events: none;
+  opacity: var(--dominator-opacity, 0);
+  transition: opacity 0.3s ease-out;
+  overflow: hidden;
+}
+
+.dominator-section-container.active {
+  pointer-events: auto;
+}
+
+/* Top Header Bar */
+.dominator-header {
+  position: absolute;
+  top: 36px;
+  left: 64px;
+  right: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 40;
+}
+
+/* 3-bar teal hamburger menu on top left */
+.dominator-menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4.5px;
+  padding: 8px;
+  outline: none;
+}
+
+.dom-bar {
+  display: block;
+  height: 2.5px;
+  background-color: #00dfc0;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 223, 192, 0.6);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.dom-bar-1 { width: 26px; }
+.dom-bar-2 { width: 17px; }
+.dom-bar-3 { width: 22px; }
+
+.dominator-menu-btn:hover .dom-bar {
+  background-color: #26a0fc;
+}
+
+/* Centered AUTOWORX Logo */
+.dominator-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dom-logo-text {
+  font-family: var(--font-mono), 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.38em;
+  color: #ffffff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+  position: relative;
+}
+
+.dom-logo-text::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 38%;
+  width: 24%;
+  height: 2px;
+  background: #00dfc0;
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(0, 223, 192, 0.8);
+}
+
+/* Search Icon Top-Right */
+.dominator-search-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.dominator-search-btn:hover {
+  color: #00dfc0;
+  transform: scale(1.1);
+}
+
+/* Left Editorial Card matching reference image */
+.dominator-card {
+  position: absolute;
+  left: 72px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 460px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.dominator-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.70);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.dominator-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  color: #ffffff;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+}
+
+.dominator-desc {
+  margin: 20px 0 0 0;
+  max-width: 420px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.02em;
+}
+
+.dominator-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.dominator-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  background: rgba(10, 15, 22, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.dominator-btn-outline:hover {
+  border-color: #00dfc0;
+  color: #00dfc0;
+  background: rgba(0, 223, 192, 0.08);
+  transform: translateY(-2px);
+}
+
+.dominator-btn-cyan {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 30px;
+  border: none;
+  border-radius: 4px;
+  background: #00dfc0;
+  color: #021a17;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  box-shadow: 0 4px 22px rgba(0, 223, 192, 0.45);
+  transition: all 0.25s ease;
+}
+
+.dominator-btn-cyan:hover {
+  background: #26e6cb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(0, 223, 192, 0.65);
+}
+
+/* Bottom Social Section */
+.dominator-social {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 56px;
+}
+
+.dominator-line {
+  width: 44px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.30);
+}
+
+.dominator-social-icons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dom-icon {
+  color: rgba(255, 255, 255, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.dom-icon:hover {
+  color: #00dfc0;
+  transform: translateY(-2px);
+}
+
+
+
+
+/* ==========================================================================
+   CENTER STAGE SUPERBIKE (HONDA CBR 1000RR FIREBLADE)
+   Prominently placed on the showroom turntable, never hidden behind content
+   ========================================================================== */
+.bike-center-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bike-rotator {
+  position: relative;
+  width: min(840px, 80vw);
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  will-change: transform, opacity;
+}
+
+.bike-glow-ambient {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle at 60% 45%, rgba(20, 210, 184, 0.22) 0%, rgba(220, 30, 45, 0.28) 40%, transparent 75%);
+  filter: blur(48px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.bike-contact-shadow {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 82%;
+  height: 52px;
+  background: rgba(0, 0, 0, 0.96);
+  filter: blur(18px);
+  border-radius: 100%;
+  pointer-events: none;
+}
+
+.bike-image-wrapper {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+
+.bike-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.95)) contrast(1.05) brightness(1.04);
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: filter 0.3s ease;
+}
+
+.bike-light-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.24) 50%, transparent 100%);
+  transform: skewX(-20deg) translateX(-150%);
+  animation: bikeSweep 4.5s infinite ease-in-out;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+@keyframes bikeSweep {
+  0% { transform: skewX(-20deg) translateX(-150%); }
+  50% { transform: skewX(-20deg) translateX(150%); }
+  100% { transform: skewX(-20deg) translateX(150%); }
+}
+
+.headlight-led-glow {
+  position: absolute;
+  top: 38%;
+  right: 35%;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle, #ffffff 0%, #14d2b8 60%, transparent 100%);
+  filter: blur(2px);
+  border-radius: 50%;
+  box-shadow: 0 0 24px #14d2b8, 0 0 45px rgba(20, 210, 184, 0.8);
+  animation: headPulse 2.5s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes headPulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); filter: blur(3px); }
+}
+
+.bike-floor-reflection {
+  position: absolute;
+  bottom: -90px;
+  left: 0;
+  right: 0;
+  height: 110px;
+  overflow: hidden;
+  opacity: 0.22;
+  transform: scaleY(-0.55);
+  filter: blur(2px);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 85%);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 85%);
+}
+
+.bike-image-reflect {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Left Spec HUD Card */
+.hero-card-left {
+  position: absolute;
+  top: 360px;
+  left: 80px;
+  width: 310px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 25;
+  pointer-events: auto;
+}
+
+.hero-card-stat {
+  padding: 14px 18px;
+  background: rgba(14, 18, 26, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.hero-card-stat:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateX(4px);
+}
+
+.hero-stat-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.hero-stat-val {
+  font-family: 'Space Grotesk', var(--font-sans);
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.text-accent-red {
+  color: #ff2a3b !important;
+  text-shadow: 0 0 12px rgba(255, 42, 59, 0.5);
+}

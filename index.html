@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>HONDA CBR 1000RR-R FIREBLADE // Low Front Angle Hero</title>
+  
+  <!-- Fonts Matching Reference Site -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800;900&family=Michroma&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Tailwind CSS (Offline Resilience) -->
+  <script src="vendor/tailwind.js"></script>
+
+  <!-- React 18 & ReactDOM 18 -->
+  <script src="vendor/react/react.production.min.js"></script>
+  <script src="vendor/react/react-dom.production.min.js"></script>
+
+  <!-- Inlined 3D Model Data (Enables 100% Zero-CORS direct double-click file:/// opening) -->
+  <script src="source/bmw_model_data.js"></script>
+</head>
+<body>
+  <!-- Canvas Container -->
+  <div id="webgl-container"></div>
+
+  <!-- Loading Screen (Hidden with zero-throw fallback elements) -->
+  <div id="loader" class="loader-overlay hidden" style="display:none !important; visibility:hidden !important; pointer-events:none !important;">
+    <div id="loader-progress"></div>
+    <div id="loader-status"></div>
+    <div id="loader-percent"></div>
+  </div>
+
+  <!-- CENTER STAGE SUPERBIKE: HONDA CBR 1000RR FIREBLADE (NEVER HIDDEN BEHIND CONTENT) -->
+  <div id="bike-center-stage" class="bike-center-container">
+    <div class="bike-rotator" id="bike-rotator">
+      <div class="bike-glow-ambient"></div>
+      <div class="bike-contact-shadow"></div>
+      <div class="bike-image-wrapper">
+        <img src="source/cbr-fireblade-transparent.png" alt="Honda CBR 1000RR-R Fireblade" class="bike-image" id="hero-bike-img"/>
+        <div class="bike-light-sweep"></div>
+        <div class="headlight-led-glow"></div>
+      </div>
+      <div class="bike-floor-reflection">
+        <img src="source/cbr-fireblade-transparent.png" alt="Floor Reflection" class="bike-image-reflect" id="hero-bike-reflect"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Premium Automotive Hero UI (1920 x 1080) -->
+  <div id="hero-ui" class="hero-container">
+
+    <!-- Top Navigation (Y: 25-75 px) -->
+    <header class="hero-top-nav">
+      <!-- Ambient Curved Light Sheen -->
+      <div class="nav-sheen"></div>
+
+      <!-- Logo at X: 80 px -->
+      <a href="#" class="nav-logo" aria-label="Brand Home">
+        <svg class="logo-emblem" width="46" height="26" viewBox="0 0 46 26" fill="none">
+          <path d="M4 23L16 3H22L10 23H4Z" fill="#FFFFFF"/>
+          <path d="M16 23L27 3H31L36 23H30L27.5 11L19.5 23H16Z" fill="#FFFFFF"/>
+          <path d="M30 23L36 3H41L35 23H30Z" fill="#FFFFFF"/>
+        </svg>
+      </a>
+
+      <!-- Navigation Links starting at X: 250 px -->
+      <nav class="nav-links">
+        <a href="#models" class="nav-link">MODELS</a>
+        <a href="#configurator" class="nav-link active">CONFIGURATOR</a>
+        <a href="#performance" class="nav-link">PERFORMANCE</a>
+      </nav>
+
+      <!-- Account & Test-Drive Links aligned top-right -->
+      <div class="nav-right">
+        <button id="btn-audio-toggle" style="background:none;border:none;color:#fff;font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:0.2em;cursor:pointer;display:flex;align-items:center;gap:6px;opacity:0.85;">
+          <span id="audio-icon">🔊</span>
+          <span id="audio-text">EXHAUST AUDIO</span>
+        </button>
+        <span class="nav-sep">|</span>
+        <a href="#testdrive" class="nav-link">TEST RIDE</a>
+        <span class="nav-sep">|</span>
+        <a href="#dealer" class="nav-link">FIND A DEALER</a>
+        <a href="#dealer" class="nav-pin" aria-label="Dealer Locator">
+          <svg width="13" height="17" viewBox="0 0 13 17" fill="none" stroke="currentColor" stroke-width="1.3">
+            <path d="M6.5 1C3.46 1 1 3.46 1 6.5C1 10.6 6.5 16 6.5 16C6.5 16 12 10.6 12 6.5C12 3.46 9.54 1 6.5 1Z"/>
+            <circle cx="6.5" cy="6.5" r="2"/>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- Eyebrow text (Y: 145 px) -->
+    <div class="hero-eyebrow">INTRODUCING THE MACHINE</div>
+
+    <!-- Main headline (Y: 190-260 px) -->
+    <h1 class="hero-headline">
+      ENGINEERED TO THRILL
+    </h1>
+
+    <!-- Left Spec Cards HUD (X: 80px, Y: 360px) -->
+    <div class="hero-card-left">
+      <div class="hero-card-stat">
+        <span class="hero-stat-label">MAX OUTPUT</span>
+        <span class="hero-stat-val text-accent-red">217 HP</span>
+      </div>
+      <div class="hero-card-stat">
+        <span class="hero-stat-label">0-100 KM/H</span>
+        <span class="hero-stat-val">2.9 S</span>
+      </div>
+      <div class="hero-card-stat">
+        <span class="hero-stat-label">PEAK TORQUE</span>
+        <span class="hero-stat-val">113 NM</span>
+      </div>
+      <div class="hero-card-stat">
+        <span class="hero-stat-label">DISPLACEMENT</span>
+        <span class="hero-stat-val">999.9 CC</span>
+      </div>
+    </div>
+
+    <!-- Side navigation arrows (X: 75 px & X: 1845 px, Y: 540 px) -->
+    <button class="side-arrow arrow-left" id="arrow-prev" aria-label="Previous">
+      <svg width="18" height="36" viewBox="0 0 18 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="14 4 4 18 14 32"></polyline>
+      </svg>
+    </button>
+    <button class="side-arrow arrow-right" id="arrow-next" aria-label="Next">
+      <svg width="18" height="36" viewBox="0 0 18 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="4 4 14 18 4 32"></polyline>
+      </svg>
+    </button>
+
+    <!-- Configurator tabs (Y: 820 px) -->
+    <div class="configurator-tabs">
+      <button class="config-tab active" data-tab="exterior">
+        <span>EXTERIOR</span>
+        <div class="tab-line"></div>
+      </button>
+      <button class="config-tab" data-tab="wheels">
+        <span>WHEELS</span>
+        <div class="tab-line"></div>
+      </button>
+      <button class="config-tab" data-tab="details">
+        <span>DETAILS</span>
+        <div class="tab-line"></div>
+      </button>
+    </div>
+
+    <!-- Color swatches -->
+    <div class="color-swatches" id="color-swatches">
+      <button class="swatch-item active" data-paint="red" title="Grand Prix Red (#D90429)" style="--swatch-color: #D90429;" aria-label="Grand Prix Red paint finish">
+        <span class="swatch-circle"></span>
+        <div class="swatch-active-line"></div>
+      </button>
+      <button class="swatch-item" data-paint="black" title="Matte Ballistic Black (#0A0A0A)" style="--swatch-color: #0A0A0A;" aria-label="Matte Ballistic Black paint finish">
+        <span class="swatch-circle"></span>
+        <div class="swatch-active-line"></div>
+      </button>
+      <button class="swatch-item" data-paint="white" title="Pearl Glare White (#F5F5F5)" style="--swatch-color: #F5F5F5;" aria-label="Pearl Glare White paint finish">
+        <span class="swatch-circle"></span>
+        <div class="swatch-active-line"></div>
+      </button>
+      <button class="swatch-item" data-paint="blue" title="Liquid Cobalt Blue (#0D47A1)" style="--swatch-color: #0D47A1;" aria-label="Liquid Cobalt Blue paint finish">
+        <span class="swatch-circle"></span>
+        <div class="swatch-active-line"></div>
+      </button>
+      <button class="swatch-item" data-paint="orange" title="Repsol Racing Orange (#FF5500)" style="--swatch-color: #FF5500;" aria-label="Repsol Racing Orange paint finish">
+        <span class="swatch-circle"></span>
+        <div class="swatch-active-line"></div>
+      </button>
+    </div>
+
+    <!-- Stage 1 Side Pose Showcase UI ("KINETIC DRIVE") -->
+    <div id="side-pose-ui" class="side-pose-container" aria-label="Kinetic Drive Showcase">
+      <div class="side-pose-content">
+        <!-- Eyebrow with horizontal line -->
+        <div class="side-eyebrow-wrap">
+          <span class="side-eyebrow">HONDA // APEX-RR</span>
+          <span class="side-eyebrow-line"></span>
+        </div>
+
+        <!-- Section Number -->
+        <div class="side-number">02.</div>
+
+        <!-- Main Headline -->
+        <h2 class="side-headline">
+          <span class="side-word">KINETIC</span>
+          <span class="side-word">DRIVE</span>
+        </h2>
+
+        <!-- Description -->
+        <p class="side-desc">
+          Precision engineered for riders who move beyond the ordinary.<br>
+          Every contour wind-tunnel sculpted to command every apex.
+        </p>
+
+        <!-- Explore CTA -->
+        <div class="side-explore">
+          <span class="side-explore-bar"></span>
+          <span class="side-explore-label">EXPLORE TELEMETRY</span>
+          <span class="side-explore-line"></span>
+        </div>
+      </div>
+
+      <!-- Right Side Step Pagination with 02 active -->
+      <div class="side-pagination" aria-label="Slide Indicator">
+        <span class="pagination-step">01</span>
+        <div class="pagination-step-wrap active">
+          <span class="pagination-active-dash"></span>
+          <span class="pagination-step">02</span>
+        </div>
+        <span class="pagination-step">03</span>
+        <span class="pagination-step">04</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Stage 3: Superbike Lineup Showcase Section -->
+  <section id="lineup-section" class="lineup-container" aria-label="Honda Apex Racing Lineup">
+    <div class="lineup-content">
+      <div class="lineup-header">
+        <span class="lineup-eyebrow">THE APEX RACING COLLECTION</span>
+        <h2 class="lineup-headline">BUILT TO DOMINATE</h2>
+      </div>
+
+      <div class="lineup-image-wrap">
+        <img src="source/cbr-fireblade-transparent.png" alt="Honda CBR 1000RR-R Lineup" class="lineup-img" id="lineup-img" style="max-height: 420px; object-fit: contain;"/>
+        <div class="lineup-vignette"></div>
+      </div>
+
+      <div class="lineup-models">
+        <div class="model-item">
+          <span class="model-badge">RC213V-S</span>
+          <span class="model-sub">MOTOGP REPLICA</span>
+        </div>
+        <div class="model-item highlight">
+          <span class="model-badge">CBR 1000RR-R</span>
+          <span class="model-sub">FIREBLADE SP</span>
+        </div>
+        <div class="model-item">
+          <span class="model-badge">CB1000 SP</span>
+          <span class="model-sub">HYPER NAKED</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stage 4 Rear Pose Showcase UI ("REAR DYNAMICS") -->
+  <div id="rear-pose-ui" class="rear-pose-container" aria-label="Rear Dynamics Showcase">
+    <div class="rear-pose-content">
+      <!-- Eyebrow with horizontal line -->
+      <div class="side-eyebrow-wrap">
+        <span class="side-eyebrow">HONDA // APEX-RR</span>
+        <span class="side-eyebrow-line"></span>
+      </div>
+
+      <!-- Section Number -->
+      <div class="side-number">03.</div>
+
+      <!-- Headline -->
+      <h2 class="side-headline">
+        <span>REAR</span>
+        <span>DYNAMICS</span>
+      </h2>
+
+      <!-- Description Paragraph -->
+      <p class="side-desc">
+        Sculpted monoposto tail cowl, Akrapovič titanium race exhaust, and razor twin LED signature<br>
+        engineered to evacuate high-speed underseat pressure and plant 200-section rear rubber into tarmac.
+      </p>
+
+      <!-- Explore CTA -->
+      <div class="side-explore">
+        <span class="side-explore-bar"></span>
+        <span class="side-explore-label">EXPLORE EXHAUST</span>
+        <span class="side-explore-line"></span>
+      </div>
+    </div>
+
+    <!-- Right Side Step Pagination with 03 active -->
+    <div class="side-pagination" aria-label="Slide Indicator">
+      <span class="pagination-step">01</span>
+      <span class="pagination-step">02</span>
+      <div class="pagination-step-wrap active">
+        <span class="pagination-active-dash"></span>
+        <span class="pagination-step">03</span>
+      </div>
+      <span class="pagination-step">04</span>
+    </div>
+  </div>
+
+  <!-- Stage 5 Top Pose Showcase UI ("AERO ARCHITECTURE") -->
+  <div id="top-pose-ui" class="top-pose-container" aria-label="Aero Architecture Top Showcase">
+    <div class="top-pose-content">
+      <!-- Eyebrow with horizontal line -->
+      <div class="side-eyebrow-wrap">
+        <span class="side-eyebrow">HONDA // APEX-RR</span>
+        <span class="side-eyebrow-line"></span>
+      </div>
+
+      <!-- Section Number -->
+      <div class="side-number">04.</div>
+
+      <!-- Headline -->
+      <h2 class="side-headline">
+        <span>AERO</span>
+        <span>ARCHITECTURE</span>
+      </h2>
+
+      <!-- Description Paragraph -->
+      <p class="side-desc">
+        MotoGP-derived enclosed biplane winglets generating 35kg downforce at 250 km/h.<br>
+        Optimized downforce engineered for absolute front-tire stability under maximum braking.
+      </p>
+
+      <!-- Explore CTA -->
+      <div class="side-explore">
+        <span class="side-explore-bar"></span>
+        <span class="side-explore-label">EXPLORE WINGLETS</span>
+        <span class="side-explore-line"></span>
+      </div>
+    </div>
+
+    <!-- Right Side Step Pagination with 04 active -->
+    <div class="side-pagination" aria-label="Slide Indicator">
+      <span class="pagination-step">01</span>
+      <span class="pagination-step">02</span>
+      <span class="pagination-step">03</span>
+      <div class="pagination-step-wrap active">
+        <span class="pagination-active-dash"></span>
+        <span class="pagination-step">04</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 6: SLOWRIDE Automotive Showcase Section (React + Tailwind CSS) -->
+  <section id="slowride-section" class="slowride-section-container" aria-label="Slowride Driven By Passion">
+    <div id="slowride-root"></div>
+  </section>
+
+  <!-- Stage 7: Motion Gallery Stream (React + Tailwind CSS) -->
+  <section id="stream-section" class="stream-section-container" aria-label="Honda Motion Stream Gallery">
+    <div id="stream-root"></div>
+  </section>
+
+  <!-- Stage 8: DOMINATOR Climax — Front Superbike Stance -->
+  <section id="dominator-section" class="dominator-section-container" aria-label="Honda Apex Dominator">
+    <!-- Top Header -->
+    <header class="dominator-header">
+      <!-- 3-bar teal hamburger menu on top left -->
+      <button class="dominator-menu-btn" aria-label="Menu">
+        <span class="dom-bar dom-bar-1"></span>
+        <span class="dom-bar dom-bar-2"></span>
+        <span class="dom-bar dom-bar-3"></span>
+      </button>
+
+      <!-- Centered Logo -->
+      <div class="dominator-logo">
+        <span class="dom-logo-text">HONDA /// APEX-RR</span>
+      </div>
+
+      <!-- Search icon on top right -->
+      <button class="dominator-search-btn" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Left Editorial Card -->
+    <div class="dominator-card">
+      <span class="dominator-eyebrow">THE RACING APEX</span>
+      <h2 class="dominator-title">CBR 1000RR-R</h2>
+      <p class="dominator-desc">
+        217 horsepower of pure 999.9cc DOHC inline-4 adrenaline. Engineered with titanium connecting rods, 
+        MotoGP-derived enclosed biplane winglets, and millisecond HSTC telemetry.
+      </p>
+
+      <div class="dominator-actions">
+        <a href="#configurator" class="dominator-btn-outline">
+          <span>Explore Specs</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="#testdrive" class="dominator-btn-cyan">
+          Order Now
+        </a>
+      </div>
+
+      <!-- Bottom Social Links & Accent Line -->
+      <div class="dominator-social">
+        <div class="dominator-line"></div>
+        <div class="dominator-social-icons">
+          <a href="#" class="dom-icon" title="Facebook" aria-label="Facebook">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </a>
+          <a href="#" class="dom-icon" title="Twitter / X" aria-label="Twitter">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+            </svg>
+          </a>
+          <a href="#" class="dom-icon" title="Instagram" aria-label="Instagram">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive 3D Mouse Parallax & Scroll Integration Script -->
+  <script>
+    // 0. Auto-scale 1920x1080 UI to fit any window size flawlessly
+    function autoScaleHeroUI() {
+      const heroUI = document.getElementById('hero-ui');
+      const sidePoseUI = document.getElementById('side-pose-ui');
+      const rearPoseUI = document.getElementById('rear-pose-ui');
+      const topPoseUI = document.getElementById('top-pose-ui');
+      const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      
+      [heroUI, sidePoseUI, rearPoseUI, topPoseUI].forEach(el => {
+        if (el) {
+          el.style.transformOrigin = 'top center';
+          el.style.transform = 'translateX(-50%) scale(' + scale + ')';
+        }
+      });
+    }
+    window.addEventListener('resize', autoScaleHeroUI);
+    window.addEventListener('DOMContentLoaded', autoScaleHeroUI);
+    autoScaleHeroUI();
+
+    // 1. Mouse 3D Parallax Tilt on the Superbike
+    const rotator = document.getElementById('bike-rotator');
+    const heroImg = document.getElementById('hero-bike-img');
+    const reflectImg = document.getElementById('hero-bike-reflect');
+    let mouseX = 0, mouseY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+      updateBikeTransform();
+    });
+
+    // 2. Scroll Choreography for Center Bike (Transitions through stages)
+    let scrollP = 0;
+    function updateBikeTransform() {
+      if (!rotator) return;
+      const p = scrollP;
+
+      let rotY = mouseX * 8;
+      let rotX = -mouseY * 6;
+      let transX = 30 + mouseX * 10;
+      let transY = -15 + mouseY * 6;
+      let scale = 1.0;
+      let flipX = 1;
+      let opacity = 1.0;
+
+      if (p < 0.12) {
+        // Stage 1: Front 3/4 Hero
+        rotY = mouseX * 8;
+        rotX = -mouseY * 6;
+        transX = 30;
+        transY = -15;
+        scale = 1.0;
+        opacity = 1.0;
+      } else if (p < 0.32) {
+        // Stage 2: KINETIC DRIVE - Side Profile
+        const t = Math.min(1, Math.max(0, (p - 0.12) / 0.08));
+        rotY = -35 * t + mouseX * 5;
+        rotX = -mouseY * 4;
+        transX = -180 * t;
+        transY = -20;
+        scale = 1.0 + 0.05 * t;
+        opacity = 1.0;
+      } else if (p < 0.45) {
+        // Stage 3: Lineup Section
+        const t = (p - 0.32) / 0.13;
+        rotY = -35 + t * 45;
+        transX = -180 + t * 180;
+        transY = -20;
+        scale = 0.95;
+        opacity = Math.max(0.15, 1 - t * 0.85);
+      } else if (p < 0.65) {
+        // Stage 4: REAR DYNAMICS - Aggressive Rear View
+        const t = Math.min(1, Math.max(0, (p - 0.45) / 0.08));
+        rotY = 65 * t + mouseX * 5;
+        rotX = 6 * t - mouseY * 4;
+        transX = 160 * t;
+        transY = -15;
+        scale = 1.02;
+        flipX = -1;
+        opacity = 1.0;
+      } else if (p < 0.82) {
+        // Stage 5: AERO ARCHITECTURE - Top / Cockpit
+        const t = Math.min(1, Math.max(0, (p - 0.65) / 0.08));
+        rotY = 15 + mouseX * 4;
+        rotX = 14 * t - mouseY * 3;
+        transX = 140 * t;
+        transY = 25 * t;
+        scale = 1.08;
+        opacity = 1.0;
+      } else {
+        // Stage 8: DOMINATOR CLIMAX
+        const t = Math.min(1, Math.max(0, (p - 0.82) / 0.08));
+        rotY = mouseX * 6;
+        rotX = -mouseY * 5;
+        transX = 120 * t;
+        transY = -10;
+        scale = 1.05;
+        opacity = 1.0;
+      }
+
+      rotator.style.transform = 'translate(' + transX + 'px, ' + transY + 'px) scale(' + (scale * flipX) + ', ' + scale + ') rotateY(' + rotY + 'deg) rotateX(' + rotX + 'deg)';
+      rotator.style.opacity = opacity;
+    }
+
+    window.addEventListener('scroll', () => {
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      scrollP = window.scrollY / maxScroll;
+      updateBikeTransform();
+    }, { passive: true });
+
+    // 3. Color Swatch Interactivity (Changes bike finish color dynamically!)
+    const swatches = document.querySelectorAll('.swatch-item');
+    swatches.forEach(btn => {
+      btn.addEventListener('click', () => {
+        swatches.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const paint = btn.getAttribute('data-paint');
+        let filterStyle = 'contrast(1.05) brightness(1.04)';
+        if (paint === 'black') {
+          filterStyle = 'contrast(1.15) brightness(0.82) saturate(0.2)';
+        } else if (paint === 'white') {
+          filterStyle = 'contrast(1.05) brightness(1.25) saturate(0.65)';
+        } else if (paint === 'blue') {
+          filterStyle = 'hue-rotate(210deg) contrast(1.1) brightness(0.95)';
+        } else if (paint === 'orange') {
+          filterStyle = 'hue-rotate(-25deg) contrast(1.12) brightness(1.05) saturate(1.3)';
+        }
+        if (heroImg) heroImg.style.filter = filterStyle;
+        if (reflectImg) reflectImg.style.filter = filterStyle;
+      });
+    });
+
+    // 4. Web Audio API Superbike Engine Rev Sound
+    let audioCtx = null;
+    let isPlaying = false;
+    let osc1, osc2, subOsc, filterNode, gainNode;
+
+    const audioBtn = document.getElementById('btn-audio-toggle');
+    const audioText = document.getElementById('audio-text');
+    const audioIcon = document.getElementById('audio-icon');
+
+    if (audioBtn) {
+      audioBtn.addEventListener('click', async () => {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === 'suspended') {
+          await audioCtx.resume();
+        }
+        if (!isPlaying) {
+          gainNode = audioCtx.createGain();
+          gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.22, audioCtx.currentTime + 0.3);
+
+          filterNode = audioCtx.createBiquadFilter();
+          filterNode.type = 'lowpass';
+          filterNode.frequency.setValueAtTime(650, audioCtx.currentTime);
+
+          osc1 = audioCtx.createOscillator();
+          osc1.type = 'sawtooth';
+          osc1.frequency.setValueAtTime(58, audioCtx.currentTime);
+
+          osc2 = audioCtx.createOscillator();
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(116, audioCtx.currentTime);
+
+          subOsc = audioCtx.createOscillator();
+          subOsc.type = 'sine';
+          subOsc.frequency.setValueAtTime(29, audioCtx.currentTime);
+
+          osc1.connect(filterNode);
+          osc2.connect(filterNode);
+          subOsc.connect(filterNode);
+          filterNode.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+
+          osc1.start();
+          osc2.start();
+          subOsc.start();
+          isPlaying = true;
+          audioText.textContent = 'AUDIO ON';
+          audioText.style.color = '#ff2a3b';
+          audioIcon.textContent = '🔊';
+        } else {
+          gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+          setTimeout(() => {
+            try { osc1.stop(); osc2.stop(); subOsc.stop(); } catch(e){}
+            isPlaying = false;
+            audioText.textContent = 'EXHAUST AUDIO';
+            audioText.style.color = '#ffffff';
+            audioIcon.textContent = '🔈';
+          }, 320);
+        }
+      });
+    }
+  </script>
+
+  <!-- React Components (Offline) -->
+  <script src="slowride.js"></script>
+  <script src="stream.js"></script>
+
+  <!-- Main 3D Stage & Animation Engine -->
+  <script src="bundle.js"></script>
+</body>
+</html>
